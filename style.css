@@ -1,0 +1,563 @@
+
+:root {
+  --bg: #090e19;
+  --panel: #172033;
+  --line: #33435e;
+  --text: #f5f8ff;
+  --muted: #a4b2c9;
+  --blue: #46baff;
+  --cyan: #5be8e8;
+  --gold: #ffd36d;
+  --red: #ff6277;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#app {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 10px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  margin-bottom: 10px;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.brand b {
+  color: var(--blue);
+}
+
+.brand small {
+  margin-left: 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+#status {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.tiny {
+  width: 38px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #202c43;
+  font-weight: 800;
+}
+
+#game-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 2px solid #36465f;
+  border-radius: 14px;
+  background: #101827;
+  box-shadow: 0 12px 35px #0007;
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #070c18dc;
+  overflow-y: auto;
+}
+
+.overlay.hidden,
+.hidden {
+  display: none !important;
+}
+
+.panel {
+  width: min(100%, 680px);
+  max-height: 100%;
+  padding: 18px;
+  overflow-y: auto;
+  border: 1px solid #4a6083;
+  border-radius: 16px;
+  background:
+    linear-gradient(150deg, #202d46, #10192a);
+  box-shadow: 0 16px 48px #0008;
+}
+
+.panel h1 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(23px, 4vw, 38px);
+  font-weight: 950;
+  letter-spacing: 2px;
+}
+
+.panel h1 em {
+  color: var(--blue);
+  font-style: normal;
+}
+
+.panel > p {
+  margin: 8px 0 14px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+.roster-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 9px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+#selected-name {
+  color: var(--cyan);
+  text-align: right;
+}
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
+}
+
+.roster button,
+.roster .fighter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 94px;
+  padding: 7px 3px;
+  border: 2px solid #394b69;
+  border-radius: 10px;
+  background: #18253b;
+  transition:
+    border-color 0.12s,
+    background 0.12s,
+    transform 0.12s;
+}
+
+.roster button:hover,
+.roster .fighter-card:hover {
+  border-color: #82b8e8;
+  background: #263954;
+}
+
+.roster button.selected,
+.roster button.active,
+.roster button[aria-pressed="true"],
+.roster .fighter-card.selected {
+  border-color: var(--cyan);
+  background: #17475a;
+  box-shadow: inset 0 0 0 1px #5be8e855;
+}
+
+.roster button:active {
+  transform: scale(0.96);
+}
+
+.roster canvas,
+.roster img {
+  width: 44px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.roster button span,
+.roster button strong,
+.roster .fighter-card span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.roster button small {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.panel label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0;
+  color: #dce7f8;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.panel select {
+  width: min(55%, 220px);
+  min-height: 34px;
+  padding: 5px 9px;
+  border: 1px solid #526584;
+  border-radius: 8px;
+  background: #101b2e;
+  color: white;
+}
+
+.panel input[type="color"] {
+  width: 72px;
+  height: 35px;
+  padding: 3px;
+  border: 1px solid #526584;
+  border-radius: 8px;
+  background: #101b2e;
+}
+
+.fallback-select {
+  display: none !important;
+}
+
+.primary {
+  display: block;
+  width: 100%;
+  min-height: 43px;
+  margin-top: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #208bea, #42c8f4);
+  color: #06111d;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 4px 16px #159de544;
+}
+
+.primary:hover {
+  filter: brightness(1.1);
+}
+
+.primary:active {
+  transform: scale(0.99);
+}
+
+.help {
+  margin-bottom: 0 !important;
+  font-size: 11px !important;
+}
+
+#touch {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  pointer-events: none;
+}
+
+.touch-left,
+.touch-right {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  pointer-events: auto;
+}
+
+.touch-left {
+  flex-wrap: wrap;
+  width: 34%;
+}
+
+.touch-right {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  width: 48%;
+}
+
+#touch button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 5px;
+  border: 1px solid #c0e2ff77;
+  border-radius: 10px;
+  background: #101d35bb;
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+  box-shadow: 0 3px 8px #0005;
+  backdrop-filter: blur(3px);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#touch button:active,
+#touch button.pressed,
+#touch button.active {
+  border-color: var(--cyan);
+  background: #268ac6dd;
+  transform: scale(0.95);
+}
+
+#touch button[data-key="attack"] {
+  background: #a3374ed9;
+}
+
+#touch button[data-key="skill"] {
+  background: #7044b9d9;
+}
+
+#touch button[data-key^="super"] {
+  background: #936b24d9;
+}
+
+.instructions {
+  padding: 12px 4px 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+#message {
+  min-height: 32px;
+  padding: 9px 4px;
+  color: #d6e4f6;
+  font-size: 12px;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+@media (hover: none), (pointer: coarse) {
+  #touch {
+    display: flex;
+  }
+}
+
+@media (max-width: 700px) {
+  #app {
+    padding: 5px;
+  }
+
+  header {
+    min-height: 34px;
+    margin-bottom: 5px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .brand small {
+    font-size: 9px;
+  }
+
+  #game-wrap {
+    border-radius: 8px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .roster {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .roster button,
+  .roster .fighter-card {
+    min-height: 75px;
+  }
+
+  .roster canvas,
+  .roster img {
+    width: 32px;
+    height: 40px;
+  }
+
+  .touch-left {
+    width: 36%;
+  }
+
+  .touch-right {
+    width: 54%;
+  }
+
+  #touch {
+    gap: 5px;
+    padding: 5px;
+  }
+
+  #touch button {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 3px;
+    border-radius: 7px;
+    font-size: 10px;
+  }
+
+  .instructions {
+    font-size: 10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  #app {
+    width: min(100%, 1000px);
+    padding: 2px;
+  }
+
+  header {
+    min-height: 26px;
+    margin-bottom: 2px;
+  }
+
+  .brand {
+    font-size: 13px;
+  }
+
+  .tiny {
+    height: 25px;
+  }
+
+  #game-wrap {
+    width: min(100%, calc((100dvh - 72px) * 16 / 9));
+    margin: 0 auto;
+  }
+
+  .panel {
+    max-height: 100%;
+    padding: 9px 12px;
+  }
+
+  .panel h1 {
+    font-size: 22px;
+  }
+
+  .panel > p {
+    margin: 3px 0 7px;
+  }
+
+  .roster {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .roster button,
+  .roster .fighter-card {
+    min-height: 62px;
+    padding: 3px;
+  }
+
+  .roster canvas,
+  .roster img {
+    width: 26px;
+    height: 34px;
+  }
+
+  .panel label {
+    margin: 4px 0;
+  }
+
+  .primary {
+    min-height: 32px;
+    margin-top: 6px;
+  }
+
+  .instructions {
+    padding-top: 3px;
+  }
+
+  #message {
+    min-height: 20px;
+    padding: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
